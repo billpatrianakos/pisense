@@ -9,9 +9,11 @@
 - NodeJS
 - Python 2 or 3 (the monitor script was written with Python 3 in mind)
 
-## Installation
+## Installation & Deployment
 
 You'll need to connect the hardware yourself but once you're set up...
 
 1. Install the Python package for interfacing with the sensor on your Raspberry Pi using the [instructions found here](https://github.com/adafruit/Adafruit_Python_DHT)
-2. 
+2. Make sure you have a new Postgres database ready for the application to use __on the server__. SQLite3 is used in development and no Postgres databases are needed there.
+3. __[DEVELOPMENT ONLY]__ Run `npm install -g gulp-cli knex && npm install`
+4. 
