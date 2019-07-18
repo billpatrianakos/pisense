@@ -1,0 +1,35 @@
+{
+  "name": "pisense",
+  "version": "0.0.1",
+  "description": "Temperature monitoring script with text alerts and web access for Raspberry Pi",
+  "main": "server/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/billpatrianakos/pisense.git"
+  },
+  "author": "Bill Patrianakos",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/billpatrianakos/pisense/issues"
+  },
+  "homepage": "https://github.com/billpatrianakos/pisense#readme",
+  "dependencies": {
+    "bcrypt": "^3.0.6",
+    "bookshelf": "^0.15.1",
+    "connect-redis": "^3.4.1",
+    "ejs": "^2.6.2",
+    "express": "^4.17.1",
+    "express-session": "^1.16.2",
+    "knex": "^0.19.0",
+    "lodash": "^4.17.14"
+  },
+  "devDependencies": {
+    "gulp": "^4.0.2",
+    "gulp-less": "^4.0.1",
+    "gulp-live-server": "0.0.31",
+    "sqlite3": "^4.0.9"
+  }
+}
