@@ -13,6 +13,10 @@ insert_final_newline = true
 charset = utf-8
 
 # Indentation for all JS
-[*.js]
+[*.{js,conf}]
 indent_style = space
 indent_size = 2
+
+[*.py]
+indent_style = space
+indent_size = 4
