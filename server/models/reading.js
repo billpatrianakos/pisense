@@ -5,7 +5,7 @@
 
 let Bookshelf = require('./index');
 
-let Reading = Bookshelf.model.extend({
+let Reading = Bookshelf.Model.extend({
   tableName: 'readings',
   hasTimestamps: true
 });
