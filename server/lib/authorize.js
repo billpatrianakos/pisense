@@ -7,6 +7,6 @@ module.exports = (req, res, next) => {
     next();
   } else {
     req.flash('info', 'You must be logged in to see this page');
-    res.redirect('/user');
+    res.redirect('/users');
   }
 };

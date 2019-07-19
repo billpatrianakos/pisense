@@ -20,7 +20,6 @@ UsersController.route('/?')
   // Log user in
   .post((req, res, next) => {
     const { username, password } = req.body;
-
     new User({ username: username })
       .fetch({ require: true })
       .then((user) => {

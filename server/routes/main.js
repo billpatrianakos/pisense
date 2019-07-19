@@ -14,7 +14,7 @@ HomeController.route('/?')
   // GET /
   // -----
   .get((req, res, next) => {
-    res.render('index');
+    res.render('main');
   });
 
 module.exports = HomeController;
