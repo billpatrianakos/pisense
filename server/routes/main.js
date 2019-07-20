@@ -7,7 +7,8 @@ const express        = require('express'),
       HomeController = express.Router(),
       authorize      = require('../lib/authorize'),
       fs             = require('fs'),
-      Reading        = require(__dirname + '/../models/reading');
+      Reading        = require(__dirname + '/../models/reading'),
+      moment         = require('moment');
 
 HomeController.use(authorize); // Require user to be logged in
 
@@ -15,17 +16,15 @@ HomeController.route('/?')
   // GET /
   // -----
   .get((req, res, next) => {
-    new Reading
-      .orderBy('id', 'desc')
-      .limit(1)
-      .fetch()
-      .then((reading) => {
-console.log('READING -------------------------------=========================');
-console.log(reading);
-        res.render('main', { temperature: reading.get('temperature'), humidity: reading.get('humidity'), created_at: reading.get('created_at') });
+    Reading
+      .query((q) => {
+        q.orderBy('id', 'DESC').limit(1)
       })
-      .catch((error) => {
-console.log(error);
+      .fetch()
+      .then(reading => {
+        res.render('main', { temperature: reading.get('temperature'), humidity: reading.get('humidity'), created_at: moment(reading.get('created_at')).format('MMMM Do YYYY at h:mm.ss') });
+      })
+      .catch(err => {
         res.status(500).send('Error in knex');
       });
   });

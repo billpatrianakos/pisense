@@ -19,21 +19,17 @@ UsersController.route('/?')
   // ------
   // Log user in
   .post((req, res, next) => {
-console.log('1 -------------------------------');
     const { username, password } = req.body;
     new User({ username: username })
       .fetch({ require: true })
       .then((user) => {
-console.log('2 -------------------------------');
         bcrypt.compare(password, user.get('password'))
           .then((response) => {
             if (response) {
-console.log('3 -------------------------------');
               req.session.userId = user.get('id');
               req.session.loggedIn = true;
               res.redirect('/');
             } else {
-console.log('4 -------------------------------');
               res.status(401).render('auth', { messages: ['Username or password was incorrect'] });
             }
           });
