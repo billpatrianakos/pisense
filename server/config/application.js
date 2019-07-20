@@ -32,6 +32,16 @@ module.exports = {
   production: {
     defaultUsername: 'CHANGE_ME', // Used in database seed file to populate your username
     defaultPassword: 'CHANGE_ME', // Used in database seed file to populate your username
+    // This object contains the settings that will be populated into your production
+    // settings table when you first seed the database
+    settings: {
+      alert_hour_start: 20, // All hour settings should use 24 hour time. For example, '20' would be equivalent to 8pm
+      alert_minute_start: 30,
+      alert_hour_end: 3,
+      alert_minute_end: 0,
+      max_temp: 70,
+      min_temp: 65
+    },
     database: {
       client: 'postgresql', // Used in knexfile. Change based on your database (postgres, pg, mysql, etc.)
       connection: { // This entire object is used in knexfile.js. Modify this based on the database of your choosing
