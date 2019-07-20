@@ -1,3 +1,5 @@
+const _      = require('lodash');
+const config = _.merge(require('../../../application').defaults, require('../../../application').production);
 
 exports.seed = function(knex) {
   // Deletes ALL existing entries
@@ -7,12 +9,12 @@ exports.seed = function(knex) {
       return knex('settings').insert([
         {
           id: 1,
-          alert_hour_start: 20,
-          alert_minute_start: 30,
-          alert_hour_end: 3,
-          alert_minute_end: 0,
-          max_temp: 69,
-          min_temp: 62
+          alert_hour_start: config.settings.alert_hour_start,
+          alert_minute_start: config.settings.alert_minute_start,
+          alert_hour_end: config.settings.alert_hour_end,
+          alert_minute_end: config.settings.alert_minute_end,
+          max_temp: config.settings.max_temp,
+          min_temp: config.settings.min_temp
         }
       ]);
     });
