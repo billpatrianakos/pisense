@@ -16,7 +16,7 @@ You'll need to connect the hardware yourself but once you're set up...
 
 1. __[PRODUCTION ONLY]__ Install the Python package for interfacing with the sensor on your Raspberry Pi using the [instructions found here](https://github.com/adafruit/Adafruit_Python_DHT)
 2. __[PRODUCTION ONLY]__ Make sure you have a new Postgres database ready for the application to use __on the server__. SQLite3 is used in development and no Postgres databases are needed there.
-3. __[DEVELOPMENT ONLY]__ Run `npm install -g gulp-cli knex && npm install`
+3. __[DEVELOPMENT ONLY]__ Run `npm install -g gulp-cli knex pm2 && npm install`
 4. __[PRODUCTION ONLY]__ Run `npm install -g knex`
 4. Update the following config files: `server/config/application.js`, `system/pisense.conf`, `system/database.ini`
 5. PRODUCTION - Install psycopg
