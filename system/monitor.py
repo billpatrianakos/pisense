@@ -111,7 +111,7 @@ try:
     connection = psycopg2.connect(**db)
     cursor = connection.cursor()
     insert_reading_query = "INSERT INTO readings(temperature, humidity, alerted, created_at, updated_at) VALUES(%s)"
-    cursor.execute(insert_reading_query, (temperature, humidity, alerted currentDatetime, currentDatetime))
+    cursor.execute(insert_reading_query, (temperature, humidity, alerted, currentDatetime, currentDatetime))
     connection.commit()
     cursor.close()
 except (Exception, psycopg2.DatabaseError) as error:
