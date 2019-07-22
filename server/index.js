@@ -1,5 +1,8 @@
 // Main server setup and startup script
+// ====================================
 
+// Require dependencies
+// --------------------
 const _           = require('lodash');
 const config      = _.merge(require('./config/application').defaults, require('./config/application')[process.env.NODE_ENV || 'development']);
 const express     = require('express');
@@ -10,11 +13,18 @@ const session     = require('express-session');
 const bodyParser  = require('body-parser');
 const flash       = require('connect-flash');
 const isProd      = function() { return _.includes(['production'], process.env.NODE_ENV); };
-if (process.env.NODE_ENV === 'production') { const RedisStore = require('connect-redis')(session); }
 
 
-// Middleware and configuration
-// ----------------------------
+// Require environment-specific dependencies
+// -----------------------------------------
+if (process.env.NODE_ENV === 'production') {
+  const RedisStore = require('connect-redis')(session);
+  const fs         = require('fs');
+}
+
+
+// Configure settings and middleware
+// ---------------------------------
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.set('trust proxy', isProd() ? 1 : 0);
@@ -51,6 +61,8 @@ app.use((err, req, res, next) => {
 });
 
 
+// Start the server
+// ----------------
 let server = app.listen(config.port || 8080, () => {
   console.log(`Gremlin server listening on localhost:${server.address().port} in ${process.env.NODE_ENV} mode`);
 });
