@@ -5,6 +5,7 @@ import Adafruit_DHT
 import configparser
 import psycopg2
 import datetime
+from datetime import timedelta
 
 currentDatetime = datetime.datetime.now()
 print("Monitoring temperature and humidity at %s" % str(currentDatetime))
@@ -70,15 +71,19 @@ finally:
 
 # Determine if alert should be sent
 today = datetime.datetime.now()
-alert_hour_start = db[1]
-alert_hour_end = db[2]
-alert_minute_start = db[3]
-alert_minute_end = db[4]
-max_temp = db[5]
-min_temp = db[6]
-alert_start = datetime.datetime.strptime("{today} {alert_hour_start}:{alert_minute_start}".format(**locals()), '%Y-%m-%d %H:%M')
-alert_end = datetime.datetime.strptime("{today} {alert_hour_end}:{alert_minute_end}".format(**locals()), '%Y-%m-%d %H:%M')
+alert_hour_start = settings[1]
+alert_hour_end = settings[2]
+alert_minute_start = settings[3]
+alert_minute_end = settings[4]
+max_temp = settings[5]
+min_temp = settings[6]
+alert_start = datetime.datetime.strptime("{today.year}-{today.month}-{today.day} {alert_hour_start}:{alert_minute_start}".format(**locals()), '%Y-%m-%d %H:%M')
+alert_end = datetime.datetime.strptime("{today.year}-{today.month}-{today.day} {alert_hour_end}:{alert_minute_end}".format(**locals()), '%Y-%m-%d %H:%M')
 alerted = False
+
+# Make sure alert end uses the correct day
+if alert_hour_end < alert_hour_start:
+    alert_end = alert_end + timedelta(days=1)
 
 # Check if we are within the alert window and if we need to send an alert
 if (currentDatetime > alert_start and currentDatetime < alert_end) and (temperature > max_temp or temperature < min_temp):
@@ -96,10 +101,8 @@ if (currentDatetime > alert_start and currentDatetime < alert_end) and (temperat
     finally:
         if connection is not None:
             connection.close()
-
     last_alert_time = latest_alert[4]
     time_since_alert = currentDatetime - last_alert_time
-
     # Check if latest alert was within last 10 minutes
     if time_since_alert.seconds > 600:
         alerted = True
@@ -110,7 +113,7 @@ connection = None
 try:
     connection = psycopg2.connect(**db)
     cursor = connection.cursor()
-    insert_reading_query = "INSERT INTO readings(temperature, humidity, alerted, created_at, updated_at) VALUES(%s)"
+    insert_reading_query = "INSERT INTO readings(id, temperature, humidity, alerted, created_at, updated_at) VALUES(DEFAULT, %s, %s, %s, %s, %s)"
     cursor.execute(insert_reading_query, (temperature, humidity, alerted, currentDatetime, currentDatetime))
     connection.commit()
     cursor.close()
