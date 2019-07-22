@@ -1,6 +1,6 @@
 {
   "name": "pisense",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Temperature monitoring script with text alerts and web access for Raspberry Pi",
   "main": "server/index.js",
   "scripts": {
