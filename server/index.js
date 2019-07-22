@@ -30,7 +30,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('trust proxy', isProd() ? 1 : 0);
 app.set('config', config);
 app.use(morgan(isProd() ? 'combined' : 'dev', {
-  stream: isProd() ? fs.createWriteStream('./log/access.log', { flags: 'a' }) : process.stdout,
+  stream: isProd() ? fs.createWriteStream(__dirname + '/log/access.log', { flags: 'a' }) : process.stdout,
   skip: (req, res) => { return isProd() && res.statusCode < 400 }
 }));
 app.use(session(config.session));
