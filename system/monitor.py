@@ -2,7 +2,7 @@
 
 import sys
 import Adafruit_DHT
-from configparser import configparser
+import configparser
 import psycopg2
 import datetime
 
@@ -41,7 +41,7 @@ if humidity is None and temperature is None:
 ##
 
 # Read config file to connect to database first
-parser = configparser()
+parser = configparser.ConfigParser()
 parser.read('database.ini')
 
 db={}
