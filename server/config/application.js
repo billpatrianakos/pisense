@@ -6,7 +6,7 @@ const RedisStore = require('connect-redis')(session);
 
 module.exports = {
   defaults: {
-    port: process.env.port || 9000,
+    port: process.env.PORT || 9000,
     session: {
       cookie: { maxAge: 86400000 },
       name: 'pisense.sid',
