@@ -13,13 +13,13 @@ const session     = require('express-session');
 const bodyParser  = require('body-parser');
 const flash       = require('connect-flash');
 const isProd      = function() { return _.includes(['production'], process.env.NODE_ENV); };
+const fs          = require('fs');
 
 
 // Require environment-specific dependencies
 // -----------------------------------------
 if (process.env.NODE_ENV === 'production') {
   const RedisStore = require('connect-redis')(session);
-  const fs         = require('fs');
 }
 
 
