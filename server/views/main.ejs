@@ -4,12 +4,12 @@
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
-  <title></title>
+  <title>Current temperature and humidity</title>
   <meta name="description" content="" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <link rel="stylesheet" href="vendor/normalize-css/normalize.css" />
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
 
   <!--[if lt IE 9]>
@@ -20,15 +20,31 @@
 
 <body>
 
-  <main class="container">
-    <h1><%= temperature; %>&deg;</h1>
-    <p>
-      <%= humidity; %>% humidity
-    </p>
-    <p>
-      <small>Last checked at <%= created_at; %></small>
-    </p>
-  </main>
+  <div class="container temp">
+    <div class="row">
+      <div class="col-12">
+        <h1><%= temperature; %>&deg;</h1>
+      </div>
+    </div>
+  </div>
+
+  <div class="container humidity">
+    <div class="row">
+      <div class="col-12">
+        <p><%= humidity; %>% humidity</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="container misc">
+    <div class="row">
+      <div class="col-12">
+        <p>
+          <small>Last checked at <%= created_at; %></small>
+        </p>
+      </div>
+    </div>
+  </div>
 
   <script src="js/scripts.js"></script>
 
