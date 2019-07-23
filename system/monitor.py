@@ -80,6 +80,7 @@ min_temp = settings[6]
 alert_start = datetime.datetime.strptime("{today.year}-{today.month}-{today.day} {alert_hour_start}:{alert_minute_start}".format(**locals()), '%Y-%m-%d %H:%M')
 alert_end = datetime.datetime.strptime("{today.year}-{today.month}-{today.day} {alert_hour_end}:{alert_minute_end}".format(**locals()), '%Y-%m-%d %H:%M')
 alerted = False
+first_run = False
 
 # Make sure alert end uses the correct day
 if alert_hour_end < alert_hour_start:
@@ -101,10 +102,13 @@ if (currentDatetime > alert_start and currentDatetime < alert_end) and (temperat
     finally:
         if connection is not None:
             connection.close()
-    last_alert_time = latest_alert[4]
-    time_since_alert = currentDatetime - last_alert_time
+    if latest_alert is not None:
+        last_alert_time = latest_alert[4]
+        time_since_alert = currentDatetime - last_alert_time
+    else:
+        first_run = True
     # Check if latest alert was within last 10 minutes
-    if time_since_alert.seconds > 600:
+    if first_run or time_since_alert.seconds > 600:
         alerted = True
         # code for sending text alert here
 
