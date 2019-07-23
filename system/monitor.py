@@ -6,6 +6,7 @@ import configparser
 import psycopg2
 import datetime
 from datetime import timedelta
+import boto3
 
 currentDatetime = datetime.datetime.now()
 print("Monitoring temperature and humidity at %s" % str(currentDatetime))
@@ -118,8 +119,18 @@ if (currentDatetime > alert_start and currentDatetime < alert_end) and (temperat
     # Check if latest alert was within last 10 minutes
     if first_run or time_since_alert.seconds > 600:
         alerted = True
-        # code for sending text alert here
-        # TODO: Write SMS code here
+        # Create an SNS client
+        client = boto3.client(
+            "sns",
+            aws_access_key_id=aws['access_key_id'],
+            aws_secret_access_key=aws['secret_access_key'],
+            region_name="us-east-1"
+        )
+        # Send your sms message.
+        client.publish(
+            PhoneNumber=YOUR_PHONE_GOES_HERE,
+            Message="This is Amazon SNS service talking!"
+        )
 
 # Save the readings to the database
 connection = None
