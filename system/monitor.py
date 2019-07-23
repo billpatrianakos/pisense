@@ -125,7 +125,7 @@ if (currentDatetime > alert_start and currentDatetime < alert_end) and (temperat
             message_body = "Temperature too cold in your monitored room"
         alerted = True
         # Create a Twilio client
-        twilio_client = Client(account_sid, auth_token)
+        twilio_client = Client(sms['account_sid'], sms['auth_token'])
         # Send a text to all of your numbers
         numbers_to_text = sms['numbers_to_text'].split(',')
         for number in numbers_to_text:
