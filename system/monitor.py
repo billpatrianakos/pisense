@@ -104,13 +104,14 @@ if (currentDatetime > alert_start and currentDatetime < alert_end) and (temperat
             connection.close()
     if latest_alert is not None:
         last_alert_time = latest_alert[4]
-        time_since_alert = currentDatetime - last_alert_time
+        time_since_alert = currentDatetime - last_alert_time.replace(tzinfo=None)
     else:
         first_run = True
     # Check if latest alert was within last 10 minutes
     if first_run or time_since_alert.seconds > 600:
         alerted = True
         # code for sending text alert here
+        # TODO: Write SMS code here
 
 # Save the readings to the database
 connection = None
