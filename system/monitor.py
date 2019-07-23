@@ -126,11 +126,18 @@ if (currentDatetime > alert_start and currentDatetime < alert_end) and (temperat
             aws_secret_access_key=aws['secret_access_key'],
             region_name="us-east-1"
         )
-        # Send your sms message.
-        client.publish(
-            PhoneNumber=YOUR_PHONE_GOES_HERE,
-            Message="This is Amazon SNS service talking!"
-        )
+        # Create the topic if it doesn't exist (this is idempotent)
+        topic = client.create_topic(Name="temperaturenotifications")
+        topic_arn = topic['TopicArn']  # get its Amazon Resource Name
+        contact_list = aws['numbers_to_text'].split(',')
+        for number in contact_list:
+            client.subscribe(
+                TopicArn=topic_arn,
+                Protocol='sms',
+                Endpoint=number  # <-- number who'll receive an SMS message.
+            )
+        # Publish a message.
+        client.publish(Message="Good news everyone!", TopicArn=topic_arn)
 
 # Save the readings to the database
 connection = None
