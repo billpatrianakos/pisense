@@ -6,7 +6,7 @@ import configparser
 import psycopg2
 import datetime
 from datetime import timedelta
-import boto3
+from twilio.rest import Client
 
 currentDatetime = datetime.datetime.now()
 print("Monitoring temperature and humidity at %s" % str(currentDatetime))
@@ -54,13 +54,13 @@ if parser.has_section('postgresql'):
 else:
     raise Exception('Section {0} not found in the {1} file'.format('postgresql', 'config.ini'))
 
-aws={}
-if parser.has_section('aws'):
-    params = parser.items('aws')
+sms={}
+if parser.has_section('sms'):
+    params = parser.items('sms')
     for param in params:
-        aws[param[0]] = param[1]
+        sms[param[0]] = param[1]
 else:
-    raise Exception('Section {0} not found in the {1} file'.format('aws', 'config.ini'))
+    raise Exception('Section {0} not found in the {1} file'.format('sms', 'config.ini'))
 
 # Connect to Postgres and get settings
 connection = None
@@ -118,26 +118,23 @@ if (currentDatetime > alert_start and currentDatetime < alert_end) and (temperat
         first_run = True
     # Check if latest alert was within last 10 minutes
     if first_run or time_since_alert.seconds > 600:
+        message_body = "Temperature out of bounds"
+        if temperature > max_temp:
+            message_body = "Temperature too hot in your monitored room"
+        else:
+            message_body = "Temperature too cold in your monitored room"
         alerted = True
-        # Create an SNS client
-        client = boto3.client(
-            "sns",
-            aws_access_key_id=aws['access_key_id'],
-            aws_secret_access_key=aws['secret_access_key'],
-            region_name="us-east-1"
-        )
-        # Create the topic if it doesn't exist (this is idempotent)
-        topic = client.create_topic(Name="temperaturenotifications")
-        topic_arn = topic['TopicArn']  # get its Amazon Resource Name
-        contact_list = aws['numbers_to_text'].split(',')
-        for number in contact_list:
-            client.subscribe(
-                TopicArn=topic_arn,
-                Protocol='sms',
-                Endpoint=number  # <-- number who'll receive an SMS message.
-            )
-        # Publish a message.
-        client.publish(Message="Good news everyone!", TopicArn=topic_arn)
+        # Create a Twilio client
+        twilio_client = Client(account_sid, auth_token)
+        # Send a text to all of your numbers
+        numbers_to_text = sms['numbers_to_text'].split(',')
+        for number in numbers_to_text:
+            message = twilio_client.messages \
+                            .create(
+                                 body=message_body,
+                                 from_=sms['from_number'],
+                                 to=number
+                             )
 
 # Save the readings to the database
 connection = None

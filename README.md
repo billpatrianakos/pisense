@@ -19,4 +19,4 @@ You'll need to connect the hardware yourself but once you're set up...
 3. __[DEVELOPMENT ONLY]__ Run `npm install -g gulp-cli knex pm2 && npm install`
 4. __[PRODUCTION ONLY]__ Run `npm install -g knex`
 4. Update the following config files: `server/config/application.js`, `system/pisense.conf`, `system/database.ini`
-5. PRODUCTION - Install psycopg
+5. PRODUCTION - Install psycopg, twilio
