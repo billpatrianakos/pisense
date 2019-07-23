@@ -43,7 +43,7 @@ if humidity is None and temperature is None:
 
 # Read config file to connect to database first
 parser = configparser.ConfigParser()
-parser.read('database.ini')
+parser.read('config.ini')
 
 db={}
 if parser.has_section('postgresql'):
@@ -51,7 +51,15 @@ if parser.has_section('postgresql'):
     for param in params:
         db[param[0]] = param[1]
 else:
-    raise Exception('Section {0} not found in the {1} file'.format('postgresql', 'database.ini'))
+    raise Exception('Section {0} not found in the {1} file'.format('postgresql', 'config.ini'))
+
+aws={}
+if parser.has_section('aws'):
+    params = parser.items('aws')
+    for param in params:
+        aws[param[0]] = param[1]
+else:
+    raise Exception('Section {0} not found in the {1} file'.format('aws', 'config.ini'))
 
 # Connect to Postgres and get settings
 connection = None
