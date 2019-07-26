@@ -6,7 +6,6 @@
 const express        = require('express'),
       HomeController = express.Router(),
       authorize      = require('../lib/authorize'),
-      fs             = require('fs'),
       Reading        = require(__dirname + '/../models/reading'),
       moment         = require('moment');
 

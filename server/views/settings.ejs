@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+  <title>Settings</title>
+  <meta name="description" content="" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <link rel="stylesheet" href="vendor/normalize-css/normalize.css" />
+  <link rel="stylesheet" href="css/style.css" />
+
+  <!--[if lt IE 9]>
+  <script src="/public/vendor/html5shiv.min.js"></script>
+  <script src="/public/vendor/respond.min.js"></script>
+  <![endif]-->
+</head>
+
+<body>
+
+  <main class="container">
+    <h1>Settings</h1>
+    <form method="patch" action="/settings">
+      Min and max temperature before alert is triggered
+      <input type="number" name="min_temp" placeholder="Min. temperature" value="<%= settings.min_temp %>" /> - 
+      <input type="number" name="max_temp" placeholder="Min. temperature" value="<%= settings.max_temp %>" />
+      <h2>Begin text alerts at</h2>
+      <select name="alert_hour_start">
+        <% for (var i = 12 - 1; i >= 0; i--) { %>
+          <option value="<%= i + 1; %>"><%= i + 1; %></option>
+        <% } %>
+      </select>
+      :
+      <select name="alert_minute_start">
+        <% for (var i = 60 - 1; i >= 0; i--) { %>
+          <option value="<%= i; %>"><%= i; %></option>
+        <% } %>
+      </select>
+
+      <select name="am_pm_start">
+        <option value="am">am</option>
+        <option value="pm">pm</option>
+      </select>
+
+      <h2>End text alerts at</h2>
+      <form method="patch" action="/settings">
+      <select name="alert_hour_end">
+        <% for (var i = 12 - 1; i >= 0; i--) { %>
+          <option value="<%= i + 1; %>"><%= i + 1; %></option>
+        <% } %>
+      </select>
+      :
+      <select name="alert_minute_end">
+        <% for (var i = 60 - 1; i >= 0; i--) { %>
+          <option value="<%= i; %>"><%= i; %></option>
+        <% } %>
+      </select>
+      <select name="am_pm_end">
+        <option value="am">am</option>
+        <option value="pm">pm</option>
+      </select>
+
+      <br /><br />
+      <input type="submit" name="Save Settings" />
+    </form>
+  </main>
+
+  <script src="js/scripts.js"></script>
+
+</body>
+</html>

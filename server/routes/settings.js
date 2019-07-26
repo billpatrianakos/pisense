@@ -6,7 +6,7 @@
 const express        		= require('express'),
       SettingsController 	= express.Router(),
       authorize      		= require('../lib/authorize'),
-      fs             		= require('fs');
+      Setting           = require(__dirname + '/../models/setting');
 
 SettingsController.use(authorize);
 
@@ -14,7 +14,15 @@ SettingsController.route('/?')
   // GET /
   // -----
   .get((req, res, next) => {
-    res.render('index');
+    // Get settings
+    Setting
+      .query((q) => {
+        q.orderBy('id', 'DESC').limit(1);
+      })
+      .fetch()
+      .then(settings => {
+        res.render('settings', { settings: settings.toJSON() })
+      });
   });
 
 module.exports = SettingsController;

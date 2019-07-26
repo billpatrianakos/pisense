@@ -64,5 +64,5 @@ app.use((err, req, res, next) => {
 // Start the server
 // ----------------
 let server = app.listen(config.port || 8080, () => {
-  console.log(`Gremlin server listening on localhost:${server.address().port} in ${process.env.NODE_ENV} mode`);
+  console.log(`PiSense server listening on localhost:${server.address().port} in ${process.env.NODE_ENV} mode`);
 });
