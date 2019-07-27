@@ -32,7 +32,7 @@ Don't be discouraged if some of the packages take a while to install, especially
 7. Run `nvm install 10.16.0` to get the version of Node that PiSense was developed for (or replace the version number with whatever you like if you know what you're doing)
 8. In order to deploy your application you'll need a git repository to deploy from. It can be on the Raspberry Pi itself or GitHub. I __strongly recommend__ you use a private repository for this. I personally have a second git remote where I push a `deploy` branch and this is where the deploy script gets the latest code from the deploy the app. Create a private branch somewhere that your Pi can talk to over the internet however you want and note the remote host and path. You'll need this later when you update the configuration on your local copy.
 9. Install the required Node modules globally on the Pi: `npm install -g knex pm2`
-10. Install nginx with `sudo apt-get install nginx`.
+10. Install nginx with `sudo apt-get install nginx`. Be sure to create the directory structure you want to host PiSense and remove the default site once you've finished making sure nginx is up and running. We'll cover creating a site conf file for PiSense later.
 11. Install and configure Redis. Redis is used for handling session storage. You have to log into the app because if you leave it accessible on the web anyone can get access to the temperature and humidity of your room which doesn't seem like a big deal but the app is built to be privacy conscious by default. [Here is a nice tutorial that'll work on the Pi](https://www.digitalocean.com/community/tutorials/how-to-install-and-secure-redis-on-ubuntu-18-04)
 12. If you want to be able to access PiSense over the internet not just on your own local home network, follow [this guide and visit the links for full instructions on how to access your Pi over the internet without port forwarding](http://billpatrianakos.me/blog/2019/07/12/access-a-raspberry-pi-from-anywhere-without-port-forwarding/)
 13. That's it for the Pi. Now we have to get our local machine set up.
@@ -45,11 +45,10 @@ Don't be discouraged if some of the packages take a while to install, especially
 4. To deploy to production, push your copy of the repository somewhere safe (where you can allow your configuration files to remain private). I use a private GitHub repo or host a copy of the repo on the Pi itself.
 5. Run `cp ecosystem.config.js.example ecosystem.config.js`
 6. Edit the following config files to suit your situation: `ecosystem.config.js`, `system/pisense.conf`, `system/config.ini`, `server/config/application.js`. `ecosystem.config.js` is your deploy settings script. `system/pisense.conf` is your Nginx site config. We'll copy this somewhere special later. `system/config.ini` is the config file that the Python monitoring script uses to connect to the database and connect to the Twilio API. `server/config/application.js` is what controls everything from the default username and password the production database is seeded with to your initial min/max temperature settings and when alerts should be sent. The `production` object is what you'll want to focus on. Read the options in `application.js` carefully, line by line, before deploying.
-7.
-
-1. __[PRODUCTION ONLY]__ Install the Python package for interfacing with the sensor on your Raspberry Pi using the [instructions found here](https://github.com/adafruit/Adafruit_Python_DHT)
-2. __[PRODUCTION ONLY]__ Make sure you have a new Postgres database ready for the application to use __on the server__. SQLite3 is used in development and no Postgres databases are needed there.
-3. __[DEVELOPMENT ONLY]__ Run `npm install -g gulp-cli knex pm2 && npm install`
-4. __[PRODUCTION ONLY]__ Run `npm install -g knex`
-4. Update the following config files: `server/config/application.js`, `system/pisense.conf`, `system/database.ini`
-5. PRODUCTION - Install psycopg, twilio
+7. Now it's time to deploy the site. Run `pm2 setup ecosystem.config.js setup`. PM2 will create a few directories in your site's root folder which is where your site will actually run from.
+8. Now you can deploy with `pm2 deploy ecosystem.config.js production`
+9. After your first deploy log into your server and run the following commands:
+	- `cp /path/to/your_site/current/system/pisense.conf /etc/nginx/sites-available/name_of_your_site.conf`
+	- `sudo ln -s /etc/nginx/sites-available/name_of_your_site.conf /etc/nginx/sites-enabled/name_of_your_site.conf`
+	- `cd /var/www/path/to/your/site/current && NODE_ENV=production knex seed:run`
+10. That should be it. From here on out it's just troubleshooting. This should have been straightforward if you're used to deploying any Node Express or Ruby Rails or Rack site. If not you'll likely need some help but everything you need to know that isn't covered here is just a Google search away. Feel free to open an issue if something in these instructions is definitely not working.
