@@ -52,3 +52,24 @@ Don't be discouraged if some of the packages take a while to install, especially
 	- `sudo ln -s /etc/nginx/sites-available/name_of_your_site.conf /etc/nginx/sites-enabled/name_of_your_site.conf`
 	- `cd /var/www/path/to/your/site/current && NODE_ENV=production knex seed:run`
 10. That should be it. From here on out it's just troubleshooting. This should have been straightforward if you're used to deploying any Node Express or Ruby Rails or Rack site. If not you'll likely need some help but everything you need to know that isn't covered here is just a Google search away. Feel free to open an issue if something in these instructions is definitely not working.
+
+### Monitoring the temperature periodically
+
+I set up the `monitor.py` script to run every 15 seconds. Doing this will save a new temperature reading to the database and check to see if a notification needs to be sent. You will not get a text message every 15 seconds however. The monitor script does a check to see if an alert has been sent in the last 10 minutes and will only send out subsequent alerts if one hasn't been sent in the last 10 minutes.
+
+The monitor script must be running at some interval for this system to work. You can choose any interval you want but to start with every 15 seconds like I did then log into the Pi and run these commands:
+
+```
+$ crontab -e
+```
+
+In the cron file add these lines:
+
+```
+* * * * * cd /var/www/path/to/your/site/current/system/ && ./monitor.py 22 4 >> ~/monitor.log
+* * * * * sleep 15; cd /var/www/path/to/your/site/current/system/ && ./monitor.py 22 4
+* * * * * sleep 30; cd /var/www/path/to/your/site/current/system/ && ./monitor.py 22 4
+* * * * * sleep 45; cd /var/www/path/to/your/site/current/system/ && ./monitor.py 22 4
+```
+
+These lines start the monitor script every 15 seconds. Basically every minute the job runs but on the second, third, and fourth lines we sleep for 15 seconds longer than the last line. That way when all the commands are added together they add up to a minute and are staggered 15 seconds apart. The first line in this set of cron tasks outputs to a log file while the others don't. This is just for debugging purposes. If the first job fails then the other three will fail in the same way as well so there's no use in filling up a log file with 4 script outputs per minute. When all goes well you'll just get a message stating that the script was started and the time it started.
