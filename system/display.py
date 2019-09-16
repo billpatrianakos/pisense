@@ -40,32 +40,37 @@ if humidity is None and temperature is None:
     print('Failed to get reading. Try again!')
     sys.exit(1)
 
+# Start running the display
+def determine_appropriate_brightness(hour):
+    if hour >= 1 and hour <= 4:
+        # lowest brightness
+        return 0
+    elif hour >= 5 and hour <= 6:
+        # medium brightness
+        return 3
+    elif hour >= 7 and hour <= 13:
+        # high brightness
+        return 7
+    elif hour >= 14 and hour <= 17:
+        # medium high
+        return 5
+    elif hour >= 18 and hour <= 19:
+        # medium brightness
+        return 4
+    else:
+        # low brightness
+        return 0
+
 tm = tm1637.TM1637(clk=9, dio=10)
-
 now = datetime.datetime.now()
-if now.hour >= 1 and now.hour <= 4:
-    # lowest brightness
-    tm.brightness(0)
-elif now.hour > 4 and now.hour <= 6:
-    # medium brightness
-    tm.brightness(3)
-elif now.hour >= 7 and now.hour <= 10:
-    # high brightness
-    tm.brightness(7)
-elif now.hour > 10 and now.hour < 17:
-    # medium high
-    tm.brightness(5)
-elif now.hour > 17 and now.hour <= 19:
-    # medium brightness
-    tm.brightness(4)
-else:
-    # low brightness
-    tm.brightness(0)
-
 temp = int(temperature)
 hum = int(humidity)
 
-# Run the display
+# Set display brightness
+brightness_level = determine_appropriate_brightness(now.hour)
+tm.brightness(brightness_level)
+
+# Cycle between reading and message
 run_cycle = True
 i = 0
 while run_cycle:
@@ -75,12 +80,12 @@ while run_cycle:
         tm.scroll('LOW HUMIdIty')
     elif hum > 40 and hum < 55:
         tm.scroll('GOOd HUMIdIty')
-    elif hum > 55:
+    elif hum >= 55:
         tm.scroll('tOO HIGH HUMIdIty')
     else:
         tm.scroll('ErrOr')
-    sleep(3)
+    tm.numbers(temp, hum)
     i += 1
     # Runs it for about 1 minute
-    if i >= 3:
+    if i >= 6:
         run_cycle = False

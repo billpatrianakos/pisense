@@ -15,7 +15,7 @@
 
 ### Physically setting up the GPIO pins and connecting the sensor
 
-You'll need to connect the hardware yourself but once you're set up with a Raspberry Pi or Raspberry Pi Zero W you can follow along here. You'll need to install GPIO pins yourself if using a Raspberry Pi Zero. All other RasPis have them pre-inserted. There are solderless kits on Amazon but I used a normal one. You can get a pack of 10 2x20 pin GPIO pins on Amazon and some Pi Zero packages come with them included. The DHT22 temperature and humidity sensor I linked to above comes with female to female jumper wires that are easy to install on the 3.3v, ground, and GPIO 4 pins on the Pi. Doing that stuff is up to you.
+You'll need to connect the hardware yourself but once you're set up with a Raspberry Pi or Raspberry Pi Zero W you can follow along here. You'll need to populate GPIO pins yourself if using a Raspberry Pi Zero. All other Pis have them pre-populated. There are solderless kits on Amazon but I used a normal one. You can get a pack of 10 2x20 pin GPIO pins on Amazon and some Pi Zero packages come with them included. The DHT22 temperature and humidity sensor I linked to above comes with female to female jumper wires that are easy to install on the 3.3v, ground, and GPIO 4 pins on the Pi. Doing that stuff is up to you.
 
 __Pro tip:__ When I deploy this to any Pi I make sure I create a separate branch off of master that way I can always merge in generic updates from master into my deploy branch without overwriting or publishing my custom configuration options.
 
@@ -35,7 +35,8 @@ Don't be discouraged if some of the packages take a while to install, especially
 10. Install nginx with `sudo apt-get install nginx`. Be sure to create the directory structure you want to host PiSense and remove the default site once you've finished making sure nginx is up and running. We'll cover creating a site conf file for PiSense later.
 11. Install and configure Redis. Redis is used for handling session storage. You have to log into the app because if you leave it accessible on the web anyone can get access to the temperature and humidity of your room which doesn't seem like a big deal but the app is built to be privacy conscious by default. [Here is a nice tutorial that'll work on the Pi](https://www.digitalocean.com/community/tutorials/how-to-install-and-secure-redis-on-ubuntu-18-04)
 12. If you want to be able to access PiSense over the internet not just on your own local home network, follow [this guide and visit the links for full instructions on how to access your Pi over the internet without port forwarding](http://billpatrianakos.me/blog/2019/07/12/access-a-raspberry-pi-from-anywhere-without-port-forwarding/)
-13. That's it for the Pi. Now we have to get our local machine set up.
+13. If you want to connect a TM1637 7 segment display you'll need to `pip3 install raspberrypi-python-tm1637` to use the display script.
+14. That's it for the Pi. Now we have to get our local machine set up.
 
 ### Deploying from your local computer
 
