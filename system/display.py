@@ -75,7 +75,7 @@ run_cycle = True
 i = 0
 while run_cycle:
     tm.numbers(temp, hum)
-    sleep(10)
+    sleep(5)
     if hum < 40:
         tm.scroll('LOW HUMIdIty')
     elif hum > 40 and hum < 55:
@@ -85,6 +85,7 @@ while run_cycle:
     else:
         tm.scroll('ErrOr')
     tm.numbers(temp, hum)
+    sleep(4)
     i += 1
     # Runs it for about 1 minute
     if i >= 6:
