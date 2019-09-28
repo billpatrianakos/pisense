@@ -11,6 +11,16 @@ echo "<<< SYSTEM UPDATED >>>"
 sudo apt install postgresql postgresql-contrib -y
 
 echo "<<< POSTGRES INSTALLED >>>"
+
+sudo apt-get install nginx -y
+
+echo "<<< INSTALLED nginx >>>"
+
+sudo mkdir -p /var/www/CHANGE_ME/current/server/public
+
+echo "<<< CREATED FOLDER /var/www/CHANGE_ME/current/server/public >>>"
+echo "!!! You should change the CHANGE_ME folder's name to match what's in your config/pisense.conf file !!!"
+
 # sudo apt-get install postgresql libpq-dev postgresql-client postgresql-client-common
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
 source .bashrc
