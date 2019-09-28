@@ -39,3 +39,15 @@ echo "<<< INSTALLED twilio AND psycopg2 PYTHON MODULES >>>"
 sudo apt-get install git -y
 
 echo "<<< INSTALLED GIT >>>"
+
+mkdir git && cd $_
+mkdir pisense.git && cd $_
+git init --bare
+
+echo "<<< CREATED GIT REPOSITORY IN $(pwd) >>>"
+
+cd ~
+
+echo "Your IP address is likely the first line of output below:"
+
+ifconfig wlan0 | grep inet
