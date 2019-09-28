@@ -12,6 +12,11 @@ sudo apt install postgresql postgresql-contrib -y
 
 echo "<<< POSTGRES INSTALLED >>>"
 
+sudo apt install redis-server -y
+
+echo "<<< INSTALLED REDIS >>>"
+echo "!!! Please configure your redis.conf file. See https://www.digitalocean.com/community/tutorials/how-to-install-and-secure-redis-on-ubuntu-18-04 for more details !!!"
+
 sudo apt-get install nginx -y
 
 echo "<<< INSTALLED nginx >>>"
@@ -62,3 +67,6 @@ cd ~
 echo "Your IP address is likely the first line of output below:"
 
 ifconfig wlan0 | grep inet
+
+echo "<<< FINISHED INSTALLATION >>>"
+echo "Please review this script's output and update any configuration files that need to be changed for PiSense to run properly"
