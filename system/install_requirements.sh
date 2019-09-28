@@ -33,8 +33,9 @@ echo "<<< INSTALLED REQUIRED GLOBAL NODE MODULES >>>"
 
 sudo pip3 install twilio 
 sudo pip3 install psycopg2
+sudo pip3 install Adafruit_DHT
 
-echo "<<< INSTALLED twilio AND psycopg2 PYTHON MODULES >>>"
+echo "<<< INSTALLED twilio, psycopg2, AND Adafruit_DHT PYTHON MODULES >>>"
 
 sudo apt-get install git -y
 
