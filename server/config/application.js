@@ -22,7 +22,8 @@ module.exports = {
     database: {
       client: '', // Left blank on purpose
       connection: {} // Left blank on purpose
-    }
+    },
+    api_key: '088e1ab3-c3a4-418b-a1ae-b931230cee4b'
   },
 
   // CHANGE ALL OF THESE BEFORE DEPLOYING
@@ -32,6 +33,7 @@ module.exports = {
   production: {
     defaultUsername: 'CHANGE_ME', // Used in database seed file to populate your username
     defaultPassword: 'CHANGE_ME', // Used in database seed file to populate your username
+    api_key:         'CHANGE_ME',
     // This object contains the settings that will be populated into your production
     // settings table when you first seed the database
     settings: {
